@@ -8,7 +8,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { MessageCircle } from "lucide-react";
 import { supabase } from '@/lib/supabaseClient';
 
-const Index = () => {
+const Product = () => {
   const [products, setProducts] = useState(initialProducts);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -78,17 +78,7 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       <div className="max-w-7xl mx-auto px-4 py-12">
-        <div className="flex justify-end mb-4 gap-2">
-          <Button variant="outline" size="icon" onClick={() => setIsDark(!isDark)}>
-            {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-          </Button>
-          <Link to="/login">
-            <Button variant="outline">
-              <LogIn className="mr-2 h-4 w-4" />
-              Admin Login
-            </Button>
-          </Link>
-        </div>
+
 
         <div className="text-center mb-12">
           <h1 className="text-3xl md:text-5xl font-bold mb-4 text-foreground">
@@ -120,13 +110,7 @@ const Index = () => {
         )}
       </div>
 
-      <footer className="border-t mt-12 py-6">
-        <div className="max-w-7xl mx-auto px-4 text-center text-sm text-muted-foreground">
-          <span>© {new Date().getFullYear()} CWorth Energy</span>
-          <span className="mx-2">·</span>
-          <span>Powered by WebSync Inc</span>
-        </div>
-      </footer>
+
 
       <Dialog open={!!quickViewProduct} onOpenChange={() => setQuickViewProduct(null)}>
         <DialogContent>
@@ -215,4 +199,4 @@ const FilteredGrid = ({ products, search, favorites, toggleFavorite, setQuickVie
   );
 };
 
-export default Index;
+export default Product;
