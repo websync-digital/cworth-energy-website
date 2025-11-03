@@ -226,6 +226,8 @@ const Home = () => {
         </div>
       </section>
 
+      <Product />
+
       {/* Why Choose Us Section */}
       <section className="py-16 lg:py-24 bg-background">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -502,7 +504,6 @@ const Home = () => {
         </div>
       </section>
 
-      <Product />
 
       {/* Contact Section */}
       <section className="py-16 lg:py-24 bg-secondary">
@@ -671,7 +672,7 @@ const Home = () => {
           </div>
         </div>
       </section>
-      
+
 
       <Footer />
     </div>
