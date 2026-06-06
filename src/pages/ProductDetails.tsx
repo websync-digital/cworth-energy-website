@@ -2,27 +2,62 @@ import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, MessageCircle } from "lucide-react";
-import { products as initialProducts } from "@/data/products";
-import { COMPANY_PHONE, formatWhatsAppMessage } from "@/lib/constants";
+import { COMPANY_PHONE, formatWhatsAppMessage, formatNaira } from "@/lib/constants";
+import { optimizeCloudinaryUrl } from "@/lib/cloudinaryClient";
+import usePageTitle from "@/hooks/usePageTitle";
+import { toast } from "sonner";
 import Footer from "@/components/Footer";
+import { supabase } from "@/lib/supabaseClient";
+
+interface ProductRow {
+  id: string;
+  name: string;
+  short_description: string;
+  full_description: string;
+  price_cents: number;
+  image_url: string;
+}
 
 const ProductDetails = () => {
   const { id } = useParams();
-  const [products, setProducts] = useState(initialProducts);
+  const [product, setProduct] = useState<ProductRow | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [notFound, setNotFound] = useState(false);
 
   useEffect(() => {
-    const savedProducts = localStorage.getItem("products");
-    if (savedProducts) setProducts(JSON.parse(savedProducts));
-  }, []);
+    if (!id) return;
+    setLoading(true);
+    supabase
+      .from('products')
+      .select('id, name, short_description, full_description, price_cents, image_url')
+      .eq('id', id)
+      .single()
+      .then(({ data, error }) => {
+        if (error || !data) setNotFound(true);
+        else setProduct(data);
+        setLoading(false);
+      });
+  }, [id]);
 
-  const product = products.find((p) => p.id === id);
+  usePageTitle(product?.name);
 
-  if (!product) {
+  if (loading) {
+    return (
+      <div className="flex flex-col min-h-screen bg-background">
+        <div className="flex-grow flex items-center justify-center">
+          <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin" />
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (notFound || !product) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-2xl font-bold mb-4">Product not found</h1>
-          <Link to="/">
+          <Link to="/product">
             <Button variant="outline">
               <ArrowLeft className="mr-2 h-4 w-4" /> Back to Products
             </Button>
@@ -32,22 +67,19 @@ const ProductDetails = () => {
     );
   }
 
-  // normalize fields (support both demo data and supabase shape)
-  const imageSrc = (product as any).image_url || (product as any).image || (product as any).imageUrl || '';
-  const priceVal = (product as any).price ?? (product as any).price_cents ?? 0;
-  const description = (product as any).fullDescription || (product as any).full_description || (product as any).short_description || '';
+  const rawImage = product.image_url || '/placeholder-product.svg';
+  const imageSrc = optimizeCloudinaryUrl(rawImage, { width: 800, height: 600, crop: 'fit' });
+  const description = product.full_description || product.short_description || '';
 
-  const formatPrice = (v: number) => `₦${new Intl.NumberFormat('en-NG').format(v)}`;
-
-  const whatsappMessage = formatWhatsAppMessage(product.name, formatPrice(priceVal));
-  const whatsappLink = `https://wa.me/${COMPANY_PHONE}?text=${encodeURIComponent(whatsappMessage)}`;
+  const whatsappMessage = formatWhatsAppMessage(product.name, formatNaira(product.price_cents));
+  const whatsappLink = `https://wa.me/${COMPANY_PHONE.replace(/\D/g, '')}?text=${encodeURIComponent(whatsappMessage)}`;
 
   return (
     <div className="flex flex-col min-h-screen bg-background">
       <div className="flex-grow">
         <div className="max-w-6xl mx-auto px-4 py-8">
           <div className="mb-6">
-            <Link to="/">
+            <Link to="/product">
               <Button variant="ghost">
                 <ArrowLeft className="mr-2 h-4 w-4" /> Back to Products
               </Button>
@@ -59,11 +91,7 @@ const ProductDetails = () => {
               <div className="space-y-6">
                 {/* Product Image */}
                 <div className="aspect-video w-full bg-gray-100 rounded-lg overflow-hidden">
-                  {imageSrc ? (
-                    <img src={imageSrc} alt={product.name} className="w-full h-full object-contain" />
-                  ) : (
-                    <div className="w-full h-full bg-gray-100 flex items-center justify-center text-gray-400">No image</div>
-                  )}
+                  <img src={imageSrc} alt={product.name} className="w-full h-full object-contain" />
                 </div>
 
                 {/* Product Details */}
@@ -73,7 +101,7 @@ const ProductDetails = () => {
                   </h1>
 
                   <div className="text-3xl font-bold text-gray-900">
-                    {formatPrice(Number(priceVal))}
+                    {formatNaira(product.price_cents)}
                   </div>
 
                   <div className="prose prose-gray max-w-none">
@@ -88,7 +116,7 @@ const ProductDetails = () => {
                     ))}
                   </div>
 
-                  <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="block mt-8 mb-8">
+                  <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="block mt-8 mb-8" onClick={() => toast.success('Opening WhatsApp...', { duration: 2000 })}>
                     <Button className="w-full bg-[#25D366] hover:bg-[#1fa855] text-white h-14 text-lg font-semibold">
                       <MessageCircle className="h-6 w-6 mr-2" />
                       Order via WhatsApp

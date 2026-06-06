@@ -6,37 +6,29 @@ const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY!;
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 /**
- * Uploads a file to Supabase storage and returns the public URL.
+ * Uploads a file to Cloudinary (replacing Supabase for cost optimization)
  * @param file - The file to upload
- * @param bucket - The storage bucket name (default: 'products')
  * @returns Promise<string> - The public URL of the uploaded file
  */
-export const uploadFile = async (file: File, bucket: string = 'product-images'): Promise<string> => {
+export const uploadFile = async (file: File): Promise<string> => {
+    // Import here to avoid circular dependencies
+    const { uploadToCloudinary } = await import('./cloudinaryClient');
+    
     try {
-        // Generate a unique filename
-        const fileExt = file.name.split('.').pop();
-        const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
-
-        // Upload the file
-        const { data, error } = await supabase.storage
-            .from(bucket)
-            .upload(fileName, file, {
-                cacheControl: '3600',
-                upsert: false
-            });
-
-        if (error) {
-            throw new Error(`Upload failed: ${error.message}`);
-        }
-
-        // Get the public URL
-        const { data: { publicUrl } } = supabase.storage
-            .from(bucket)
-            .getPublicUrl(data.path);
-
-        return publicUrl;
+        const url = await uploadToCloudinary(file);
+        return url;
     } catch (error) {
         console.error('File upload error:', error);
         throw error;
     }
+};
+
+/**
+ * [DEPRECATED] Use countImagesInCloudinary from cloudinaryClient.ts instead
+ * Lists all images that exist in Cloudinary for the product folder
+ */
+export const countImagesInBucket = async (): Promise<number> => {
+    console.warn('[DEPRECATED] countImagesInBucket - Supabase bucket is no longer used');
+    console.warn('Use the Cloudinary API or dashboard to check image count');
+    return 0;
 };

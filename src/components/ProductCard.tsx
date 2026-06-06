@@ -3,6 +3,7 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { MessageCircle, Star, Heart, Eye } from "lucide-react";
 import { Product } from "@/data/products";
+import { formatNaira } from "@/lib/constants";
 
 interface ProductCardProps {
   product: Product;
@@ -27,7 +28,7 @@ const ProductCard = ({ product, isFavorite, toggleFavorite, setQuickViewProduct 
         <p className="text-sm text-gray-600 mb-3 line-clamp-2">
           {product.shortDescription}
         </p>
-        <p className="text-xl font-bold text-blue-600 mb-4">₦{product.price.toLocaleString()}</p>
+        <p className="text-xl font-bold text-blue-600 mb-4">{formatNaira(product.price)}</p>
         <Link to={`/product/${product.id}`}>
           <Button
             className="w-full bg-blue-500 hover:bg-blue-600 text-white"

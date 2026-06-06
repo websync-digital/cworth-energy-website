@@ -117,9 +117,20 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="border-t border-primary-foreground/20 mt-12 pt-8 text-center">
+        <div className="border-t border-primary-foreground/20 mt-12 pt-8 text-center space-y-1">
           <p className="text-primary-foreground/80 text-sm">
             &copy; {currentYear} Cworth Energy. All rights reserved.
+          </p>
+          <p className="text-primary-foreground/50 text-xs">
+            Powered by{' '}
+            <a
+              href="https://www.websyncdigital.com.ng"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-primary-foreground/80 transition-colors underline underline-offset-2"
+            >
+              WebSync Digital
+            </a>
           </p>
         </div>
       </div>

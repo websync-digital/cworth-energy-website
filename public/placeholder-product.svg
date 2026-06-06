@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300">
+  <rect width="400" height="300" fill="#f3f4f6"/>
+  <rect x="140" y="90" width="120" height="120" rx="16" fill="#e5e7eb"/>
+  <text x="200" y="168" font-family="system-ui,sans-serif" font-size="52" font-weight="700" fill="#9ca3af" text-anchor="middle">C</text>
+  <text x="200" y="242" font-family="system-ui,sans-serif" font-size="13" fill="#d1d5db" text-anchor="middle" letter-spacing="2">CWORTH ENERGY</text>
+</svg>

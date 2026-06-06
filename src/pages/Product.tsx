@@ -4,11 +4,17 @@ import ProductCard from "@/components/ProductCard";
 import { products as initialProducts } from "@/data/products";
 import { Button } from "@/components/ui/button";
 import { LogIn, Sun, Moon } from "lucide-react";
+import ProductSkeleton from "@/components/ProductSkeleton";
+import { toast } from "sonner";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { MessageCircle } from "lucide-react";
 import { supabase } from '@/lib/supabaseClient';
+import { optimizeCloudinaryUrl } from '@/lib/cloudinaryClient';
+import { COMPANY_PHONE, formatWhatsAppMessage, formatNaira } from '@/lib/constants';
+import usePageTitle from '@/hooks/usePageTitle';
 
 const Product = () => {
+  usePageTitle('Products');
   const [products, setProducts] = useState(initialProducts);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -67,7 +73,7 @@ const Product = () => {
             shortDescription: p.short_description ?? '',
             fullDescription: p.full_description ?? '',
             price: p.price_cents ? Number(p.price_cents) : 0,
-            image: p.image_url ?? '/src/assets/placeholder.svg'
+            image: optimizeCloudinaryUrl(p.image_url ?? '', { width: 400, height: 300 }) || '/placeholder-product.svg'
           }));
 
           setProducts(mapped);
@@ -116,7 +122,9 @@ const Product = () => {
         </div>
 
         {loading ? (
-          <div className="flex justify-center py-8">Loading products...</div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
+            {Array.from({ length: 6 }).map((_, i) => <ProductSkeleton key={i} />)}
+          </div>
         ) : error ? (
           <div className="text-center text-destructive py-8">{error}</div>
         ) : (
@@ -131,7 +139,7 @@ const Product = () => {
           {quickViewProduct && (
             <div>
               <h2 className="text-2xl font-bold mb-4">{quickViewProduct?.name}</h2>
-              <p className="text-2xl font-bold text-black mb-6">₦{quickViewProduct.price.toLocaleString()}</p>
+              <p className="text-2xl font-bold text-black mb-6">{formatNaira(quickViewProduct.price)}</p>
 
               <div className="text-sm text-gray-700 space-y-4 mb-8">
                 {quickViewProduct.shortDescription && (
@@ -150,10 +158,11 @@ const Product = () => {
               </div>
 
               <a
-                href={`https://wa.me/?text=${encodeURIComponent(`Hi! I'm interested in the ${quickViewProduct.name} priced at ₦${quickViewProduct.price.toLocaleString()}`)}`}
+                href={`https://wa.me/${COMPANY_PHONE.replace(/\D/g, '')}?text=${encodeURIComponent(formatWhatsAppMessage(quickViewProduct.name, quickViewProduct.price))}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="block w-full"
+                onClick={() => toast.success('Opening WhatsApp...', { duration: 2000 })}
               >
                 <Button
                   className="w-full h-14 text-lg font-semibold text-white bg-[#25D366] hover:bg-[#1fa855]"
@@ -174,7 +183,7 @@ const Product = () => {
           style={{ position: 'fixed', right: 16, bottom: 16, zIndex: 9999, paddingRight: 'env(safe-area-inset-right)', paddingBottom: 'env(safe-area-inset-bottom)' }}
         >
           <a
-            href={`https://wa.me/?text=${encodeURIComponent(`Hi! I'm interested in the ${quickViewProduct.name} priced at ₦${quickViewProduct.price.toLocaleString()}`)}`}
+            href={`https://wa.me/${COMPANY_PHONE.replace(/\D/g, '')}?text=${encodeURIComponent(formatWhatsAppMessage(quickViewProduct.name, quickViewProduct.price))}`}
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Order via WhatsApp"
@@ -209,16 +218,23 @@ const FilteredGrid = ({ products, search, favorites, toggleFavorite, setQuickVie
   if (filtered.length === 0) {
     return (
       <div className="text-center py-12">
-        <p className="text-lg text-muted-foreground">No products match your filters.</p>
+        <p className="text-lg text-muted-foreground">No products match your search.</p>
       </div>
     );
   }
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6 animate-fade-in">
+    <div>
+      {search && (
+        <p className="text-sm text-muted-foreground mb-3">
+          {filtered.length} {filtered.length === 1 ? 'product' : 'products'} found
+        </p>
+      )}
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6 animate-fade-in">
       {filtered.map((product: any) => (
         <ProductCard key={product.id} product={product} isFavorite={favorites.includes(product.id)} toggleFavorite={() => toggleFavorite(product.id)} setQuickViewProduct={setQuickViewProduct} />
       ))}
+    </div>
     </div>
   );
 };
