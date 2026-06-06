@@ -640,7 +640,7 @@ const Home = () => {
                   </div>
                   <div>
                     <h4 className="font-semibold text-foreground mb-1">Email</h4>
-                    <p className="text-muted-foreground">info@cworthenergy.com</p>
+                    <a href="mailto:cworthsolarworldwide@gmail.com" className="text-muted-foreground hover:text-primary transition-colors">cworthsolarworldwide@gmail.com</a>
                     <p className="text-sm text-muted-foreground mt-1">We'll respond within 24 hours</p>
                   </div>
                 </div>
@@ -653,7 +653,8 @@ const Home = () => {
                   </div>
                   <div>
                     <h4 className="font-semibold text-foreground mb-1">Office Location</h4>
-                    <p className="text-muted-foreground">Lagos, Nigeria</p>
+                    <p className="text-muted-foreground">Opposite Living Faith Church</p>
+                    <p className="text-muted-foreground">Nyanya, FCT Abuja, Nigeria</p>
                   </div>
                 </div>
               </Card>

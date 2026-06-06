@@ -66,14 +66,13 @@ const Footer = () => {
               </li>
               <li className="flex items-start space-x-3">
                 <Mail size={18} className="mt-0.5 flex-shrink-0" />
-                <span className="text-primary-foreground/90 text-sm">cworthsolarworldwide@gmail.com</span>
+                <a href="mailto:cworthsolarworldwide@gmail.com" className="text-primary-foreground/90 hover:text-background transition-colors text-sm">cworthsolarworldwide@gmail.com</a>
               </li>
               <li className="flex items-start space-x-3">
                 <MapPin size={18} className="mt-0.5 flex-shrink-0" />
                 <div className="text-primary-foreground/90 text-sm">
-                  <p>WILDOT Plaza</p>
-                  <p>903 Obafemi Awolowo Way, Utako</p>
-                  <p>Abuja 900108, Federal Capital Territory</p>
+                  <p>Opposite Living Faith Church</p>
+                  <p>Nyanya, FCT Abuja</p>
                   <p>Nigeria</p>
                 </div>
               </li>

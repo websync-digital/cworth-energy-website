@@ -58,7 +58,7 @@ const Contact = () => {
               Let's Build a Sustainable Future Together
             </h1>
             <p className="text-lg lg:text-xl text-muted-foreground leading-relaxed">
-              Serving homes and businesses across Lagos - from Lekki to Victoria Island, Ikeja to Ajah. Get in touch with our team for a free consultation and quote.
+              Serving homes and businesses across Abuja and Nigeria. Get in touch with our team for a free consultation and quote.
             </p>
           </div>
         </div>
@@ -185,7 +185,7 @@ const Contact = () => {
                   </div>
                   <div>
                     <h3 className="font-semibold text-foreground mb-1">Email</h3>
-                    <p className="text-muted-foreground">info@cworthenergy.com</p>
+                    <a href="mailto:cworthsolarworldwide@gmail.com" className="text-muted-foreground hover:text-primary transition-colors">cworthsolarworldwide@gmail.com</a>
                     <p className="text-sm text-muted-foreground mt-1">We'll respond within 24 hours</p>
                   </div>
                 </div>
@@ -198,7 +198,8 @@ const Contact = () => {
                   </div>
                   <div>
                     <h3 className="font-semibold text-foreground mb-1">Office Location</h3>
-                    <p className="text-muted-foreground">Lagos, Nigeria</p>
+                    <p className="text-muted-foreground">Opposite Living Faith Church</p>
+                    <p className="text-muted-foreground">Nyanya, FCT Abuja, Nigeria</p>
                   </div>
                 </div>
               </Card>
