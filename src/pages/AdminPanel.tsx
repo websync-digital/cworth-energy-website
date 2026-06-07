@@ -232,7 +232,7 @@ const AdminPanel = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
               </svg>
             </button>
-            <span className="font-semibold">Cworth Energy Admin</span>
+            <span className="font-semibold">Cworth Solar Energy Admin</span>
           </div>
           <div className="flex items-center gap-2">
             <Button onClick={handleLogout} variant="outline" size="sm">
@@ -255,7 +255,7 @@ const AdminPanel = () => {
             </div>
             {!isCollapsed && (
               <div className="overflow-hidden">
-                <h2 className="font-semibold truncate">Cworth Energy</h2>
+                <h2 className="font-semibold truncate">Cworth Solar Energy</h2>
                 <p className="text-xs text-muted-foreground">Admin Panel</p>
               </div>
             )}

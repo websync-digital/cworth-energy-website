@@ -15,7 +15,7 @@ const Footer = () => {
               <div className="w-10 h-10 bg-background rounded-lg flex items-center justify-center">
                 <span className="text-primary font-bold text-xl">C</span>
               </div>
-              <span className="text-xl font-bold">Cworth Energy</span>
+              <span className="text-xl font-bold">Cworth Solar Energy</span>
             </div>
             <p className="text-primary-foreground/90 text-sm leading-relaxed">
               Powering a cleaner future with affordable and reliable solar solutions for homes and businesses.
@@ -119,7 +119,7 @@ const Footer = () => {
 
         <div className="border-t border-primary-foreground/20 mt-12 pt-8 text-center space-y-1">
           <p className="text-primary-foreground/80 text-sm">
-            &copy; {currentYear} Cworth Energy. All rights reserved.
+            &copy; {currentYear} Cworth Solar Energy. All rights reserved.
           </p>
           <p className="text-primary-foreground/50 text-xs">
             Powered by{' '}

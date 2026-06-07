@@ -115,7 +115,7 @@ const Home = () => {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="max-w-4xl mx-auto text-center animate-fade-in px-2 sm:px-0">
             <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold text-background mb-4 sm:mb-6 leading-tight">
-              Powering a Cleaner Future with Cworth Energy
+              Powering a Cleaner Future with Cworth Solar Energy
             </h1>
             <p className="text-lg sm:text-xl lg:text-2xl text-background/95 mb-8 lg:mb-12 leading-relaxed max-w-2xl mx-auto">
               Affordable and reliable solar solutions for homes and businesses.
@@ -194,16 +194,16 @@ const Home = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="animate-fade-in order-2 lg:order-1">
               <h2 className="text-3xl lg:text-4xl font-bold text-foreground mb-6">
-                About Cworth Energy
+                About Cworth Solar Energy
               </h2>
               <p className="text-lg text-muted-foreground leading-relaxed mb-6">
-                We are Nigeria's premier solar energy provider, delivering world-class solar systems that set the standard for quality and reliability. At Cworth Energy, we specialize in top-notch solar installations using only the best components available in the market.
+                We are Nigeria's premier solar energy provider, delivering world-class solar systems that set the standard for quality and reliability. At Cworth Solar Energy, we specialize in top-notch solar installations using only the best components available in the market.
               </p>
               <p className="text-lg text-muted-foreground leading-relaxed mb-6">
                 Our commitment to excellence has made us the trusted choice for homes and businesses across Nigeria. We offer premium-grade solar panels, cutting-edge inverter technology, and professional installation services that guarantee maximum performance and longevity.
               </p>
               <p className="text-lg text-muted-foreground leading-relaxed">
-                When you choose Cworth Energy, you're choosing the best solar solutions in Nigeria - top quality products, expert installation, unmatched reliability, and exceptional after-sales support. Experience the difference that premium solar technology can make for your energy needs.
+                When you choose Cworth Solar Energy, you're choosing the best solar solutions in Nigeria - top quality products, expert installation, unmatched reliability, and exceptional after-sales support. Experience the difference that premium solar technology can make for your energy needs.
               </p>
               <div className="mt-8 pt-6 border-t border-primary/10">
                 <p className="text-lg font-semibold text-primary mb-2 flex items-center gap-2">
@@ -268,7 +268,7 @@ const Home = () => {
             </div>
             <div className="order-1 lg:order-2 animate-slide-up">
               <h2 className="text-3xl lg:text-4xl font-bold text-foreground mb-6">
-                Why Choose Cworth Energy?
+                Why Choose Cworth Solar Energy?
               </h2>
               <div className="space-y-4">
                 <div className="flex items-start space-x-3">
@@ -494,7 +494,7 @@ const Home = () => {
                 </div>
               </div>
               <p className="text-muted-foreground">
-                "Cworth Energy transformed our home's energy use and saved us thousands. The installation was seamless and professional."
+                "Cworth Solar Energy transformed our home's energy use and saved us thousands. The installation was seamless and professional."
               </p>
             </Card>
 

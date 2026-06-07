@@ -13,7 +13,7 @@ const About = () => {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center animate-fade-in">
             <h1 className="text-4xl lg:text-5xl font-bold text-foreground mb-6">
-              Our Mission at Cworth Energy
+              Our Mission at Cworth Solar Energy
             </h1>
             <p className="text-lg lg:text-xl text-muted-foreground leading-relaxed">
               Delivering affordable, sustainable solar solutions for a cleaner future.

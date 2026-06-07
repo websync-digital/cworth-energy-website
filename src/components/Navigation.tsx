@@ -28,7 +28,7 @@ const Navigation = () => {
           <Link to="/" className="flex items-center group">
             <img
               src={cworthLogo}
-              alt="Cworth Energy Logo"
+              alt="Cworth Solar Energy Logo"
               className="h-10 lg:h-14 w-auto transform group-hover:scale-105 transition-transform"
             />
           </Link>
