@@ -198,8 +198,7 @@ const Contact = () => {
                   </div>
                   <div>
                     <h3 className="font-semibold text-foreground mb-1">Office Location</h3>
-                    <p className="text-muted-foreground">Opposite Living Faith Church</p>
-                    <p className="text-muted-foreground">Nyanya, FCT Abuja, Nigeria</p>
+                    <p className="text-muted-foreground">Imo state, Rivers State, Lagos state, Kano state, AKwa ibom State, Oyo state, Delta State, FCT Abuja</p>
                   </div>
                 </div>
               </Card>

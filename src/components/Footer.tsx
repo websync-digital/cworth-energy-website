@@ -71,9 +71,7 @@ const Footer = () => {
               <li className="flex items-start space-x-3">
                 <MapPin size={18} className="mt-0.5 flex-shrink-0" />
                 <div className="text-primary-foreground/90 text-sm">
-                  <p>Opposite Living Faith Church</p>
-                  <p>Nyanya, FCT Abuja</p>
-                  <p>Nigeria</p>
+                  <p>Imo state, Rivers State, Lagos state, Kano state, AKwa ibom State, Oyo state, Delta State, FCT Abuja</p>
                 </div>
               </li>
               <li className="mt-2">

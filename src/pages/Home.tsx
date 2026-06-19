@@ -653,8 +653,7 @@ const Home = () => {
                   </div>
                   <div>
                     <h4 className="font-semibold text-foreground mb-1">Office Location</h4>
-                    <p className="text-muted-foreground">Opposite Living Faith Church</p>
-                    <p className="text-muted-foreground">Nyanya, FCT Abuja, Nigeria</p>
+                    <p className="text-muted-foreground">Imo state, Rivers State, Lagos state, Kano state, AKwa ibom State, Oyo state, Delta State, FCT Abuja</p>
                   </div>
                 </div>
               </Card>
