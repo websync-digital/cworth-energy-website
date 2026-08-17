@@ -60,7 +60,7 @@ const Product = () => {
       setError(null);
       try {
         const { data, error } = await supabase
-          .from('products')
+          .from('cworth_products')
           .select('id, name, short_description, full_description, price_cents, image_url')
           .order('created_at', { ascending: false });
 

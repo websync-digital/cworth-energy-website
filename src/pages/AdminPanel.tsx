@@ -31,7 +31,7 @@ interface Product {
 }
 
 const AdminPanel = () => {
-  const { isAdmin, logout } = useAuth();
+  const { isAdmin, loading: authLoading, logout } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
   const [products, setProducts] = useState<Product[]>([]);
@@ -54,7 +54,7 @@ const AdminPanel = () => {
 
   // 🟢 Fetch products from Supabase
   useEffect(() => {
-    if (!isAdmin) {
+    if (!authLoading && !isAdmin) {
       navigate('/login');
       return;
     }
@@ -62,7 +62,7 @@ const AdminPanel = () => {
     const fetchProducts = async () => {
       setLoading(true);
       const { data, error } = await supabase
-        .from('products')
+        .from('cworth_products')
         .select('*')
         .order('created_at', { ascending: false });
 
@@ -75,7 +75,7 @@ const AdminPanel = () => {
     };
 
     fetchProducts();
-  }, [isAdmin, navigate, toast]);
+  }, [authLoading, isAdmin, navigate, toast]);
 
   // 🟣 Add new product (from modal)
   const handleAddProduct = async (e?: React.FormEvent) => {
@@ -99,7 +99,7 @@ const AdminPanel = () => {
       };
 
       const { data, error } = await supabase
-        .from('products')
+        .from('cworth_products')
         .insert([payload])
         .select();
 
@@ -127,7 +127,7 @@ const AdminPanel = () => {
     const ok = window.confirm(`Delete "${product.name}"? This action cannot be undone.`);
     if (!ok) return;
 
-    const { error } = await supabase.from('products').delete().eq('id', id);
+    const { error } = await supabase.from('cworth_products').delete().eq('id', id);
     if (error) {
       toast({ title: 'Error deleting product', description: error.message });
     } else {
@@ -136,11 +136,12 @@ const AdminPanel = () => {
     }
   };
 
-  const handleLogout = () => {
-    logout();
+  const handleLogout = async () => {
+    await logout();
     navigate('/');
   };
 
+  if (authLoading) return null;
   if (!isAdmin) return null;
 
   // Filter products based on search term
@@ -189,7 +190,7 @@ const AdminPanel = () => {
       };
 
       const { data, error } = await supabase
-        .from('products')
+        .from('cworth_products')
         .update(payload)
         .eq('id', editingProduct.id)
         .select();

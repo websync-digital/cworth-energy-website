@@ -51,7 +51,7 @@ const Home = () => {
       setProductsLoading(true);
       try {
         const { data, error } = await supabase
-          .from('products')
+          .from('cworth_products')
           .select('*')
           .order('created_at', { ascending: false })
           .limit(6);

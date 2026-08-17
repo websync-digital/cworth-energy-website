@@ -28,7 +28,7 @@ const ProductDetails = () => {
     if (!id) return;
     setLoading(true);
     supabase
-      .from('products')
+      .from('cworth_products')
       .select('id, name, short_description, full_description, price_cents, image_url')
       .eq('id', id)
       .single()

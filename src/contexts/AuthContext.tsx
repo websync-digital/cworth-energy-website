@@ -1,38 +1,60 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { supabase } from '@/lib/supabaseClient';
 
 interface AuthContextType {
   isAdmin: boolean;
-  login: (username: string, password: string) => boolean;
-  logout: () => void;
+  loading: boolean;
+  login: (email: string, password: string) => Promise<void>;
+  logout: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAdmin, setIsAdmin] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const adminStatus = localStorage.getItem('isAdmin');
-    setIsAdmin(adminStatus === 'true');
+    const syncSession = async () => {
+      const { data } = await supabase.auth.getSession();
+      setIsAdmin(data.session?.user.app_metadata?.role === 'admin');
+      setLoading(false);
+    };
+
+    syncSession();
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+      setIsAdmin(session?.user.app_metadata?.role === 'admin');
+      setLoading(false);
+    });
+
+    return () => listener.subscription.unsubscribe();
   }, []);
 
-  const login = (username: string, password: string) => {
-    // WARNING: This is NOT secure - hardcoded credentials for demo only
-    if (username === 'admin' && password === '123') {
-      setIsAdmin(true);
-      localStorage.setItem('isAdmin', 'true');
-      return true;
+  const login = async (email: string, password: string) => {
+    const normalizedEmail = email.trim().toLowerCase();
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: normalizedEmail,
+      password,
+    });
+    if (error) throw error;
+
+    if (!data.session || !data.user) {
+      throw new Error('Supabase did not create a valid login session.');
     }
-    return false;
+
+    if (data.user.app_metadata?.role !== 'admin') {
+      await supabase.auth.signOut();
+      throw new Error('This account does not have administrator access.');
+    }
   };
 
-  const logout = () => {
-    setIsAdmin(false);
-    localStorage.removeItem('isAdmin');
+  const logout = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) throw error;
   };
 
   return (
-    <AuthContext.Provider value={{ isAdmin, login, logout }}>
+    <AuthContext.Provider value={{ isAdmin, loading, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

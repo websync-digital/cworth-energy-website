@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
@@ -8,17 +8,54 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { useToast } from '@/hooks/use-toast';
 
 const Login = () => {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { login } = useAuth();
+  const [submitting, setSubmitting] = useState(false);
+  const { isAdmin, loading, login } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  useEffect(() => {
+    if (!loading && isAdmin) navigate('/admin', { replace: true });
+  }, [isAdmin, loading, navigate]);
+
+  const getLoginErrorMessage = (error: any) => {
+    const message = String(error?.message || '').toLowerCase();
+
+    if (message.includes('invalid login credentials')) {
+      return 'The email address or password is incorrect.';
+    }
+    if (message.includes('email not confirmed')) {
+      return 'Confirm the email address from the Supabase verification email, then try again.';
+    }
+    if (message.includes('administrator access')) {
+      return 'This user exists but has not been assigned the admin role.';
+    }
+    if (message.includes('failed to fetch') || message.includes('network')) {
+      return 'The login service could not be reached. Check your connection and try again.';
+    }
+    if (message.includes('rate limit')) {
+      return 'Too many login attempts. Please wait a moment and try again.';
+    }
+
+    return error?.message || 'Unable to sign in. Please try again.';
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (login(username, password)) {
-      navigate('/admin');
+
+    setSubmitting(true);
+    try {
+      await login(email, password);
+      navigate('/admin', { replace: true });
+    } catch (error: any) {
+      toast({
+        title: 'Unable to sign in',
+        description: getLoginErrorMessage(error),
+        variant: 'destructive',
+      });
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -34,13 +71,15 @@ const Login = () => {
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="username">Username</Label>
+              <Label htmlFor="email">Email</Label>
               <Input
-                id="username"
-                type="text"
-                placeholder="Enter username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                id="email"
+                type="email"
+                autoComplete="email"
+                placeholder="Enter your admin email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                disabled={submitting}
                 required
               />
             </div>
@@ -49,14 +88,16 @@ const Login = () => {
               <Input
                 id="password"
                 type="password"
+                autoComplete="current-password"
                 placeholder="Enter password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                disabled={submitting}
                 required
               />
             </div>
-            <Button type="submit" className="w-full">
-              Login
+            <Button type="submit" className="w-full" disabled={submitting || loading}>
+              {submitting ? 'Signing in…' : 'Login'}
             </Button>
           </form>
         </CardContent>
